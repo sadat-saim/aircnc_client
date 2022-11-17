@@ -1,10 +1,46 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Sidebar, Button } from "flowbite-react";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
+import { useLoaderData } from "react-router-dom";
+import CardItem from "../common/Card/Card";
+import { Swiper, SwiperSlide } from "swiper/react";
+import SwiperCore, { Autoplay } from "swiper";
+import "swiper/css";
+import "swiper/css/autoplay";
 
 const Home = () => {
   const [adultCount, setAdultCount] = useState(0);
   const [childCount, setChildCount] = useState(0);
+  const [homes, setHomesData] = useState(null);
+  const data = useLoaderData();
+  const breakpoints = {
+    // when window width is >= 576px
+    576: {
+      slidesPerView: 1,
+    },
+    // when window width is >= 768px
+    768: {
+      slidesPerView: 2,
+    },
+    // when window width is >= 1024px
+    1024: {
+      spaceBetween: 10,
+      slidesPerView: 3,
+    },
+    1280: {
+      slidesPerGroup: 2,
+      slidesPerView: 4,
+    },
+  };
+
+  useEffect(() => {
+    fetch("homes.json")
+      .then((res) => res.json())
+      .then((data) => setHomesData(data))
+      .catch((err) => console.error(err));
+  }, []);
+
+  SwiperCore.use([Autoplay]);
 
   const handleAdultCount = (num) => {
     setAdultCount((prev) => (prev + num < 0 ? 0 : prev + num));
@@ -14,12 +50,15 @@ const Home = () => {
   };
 
   return (
-    <div className="container mx-auto">
-      <Sidebar aria-label="sidebar" className="w-1/3">
+    <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+      <Sidebar
+        aria-label="sidebar"
+        className="w-full md:sticky top-0 md:h-screen"
+      >
         <Sidebar.Items>
           <Sidebar.ItemGroup>
-            <Sidebar.Item className="font-semibold text-xl hover:bg-transparent">
-              Where do you want to go?
+            <Sidebar.Item className=" text-xl hover:bg-transparent">
+              <span className="font-semibold">Where do you want to go?</span>
             </Sidebar.Item>
             <Sidebar.Item className="hover:bg-transparent border-2 border-gray-100">
               <h3 className="font-semibold">Location</h3>
@@ -111,6 +150,40 @@ const Home = () => {
           </Sidebar.ItemGroup>
         </Sidebar.Items>
       </Sidebar>
+      <div className="col-span-1 lg:col-span-2 mb-6 mx-3">
+        <div>
+          <h3 className="font-semibold text-xl mt-6 mb-4">Experiences</h3>
+          <Swiper
+            spaceBetween={5}
+            slidesPerView={1}
+            autoplay={{ delay: 2000 }}
+            loop
+            breakpoints={breakpoints}
+          >
+            {data?.map((hotel) => (
+              <SwiperSlide key={hotel._id}>
+                <CardItem hotel={hotel}></CardItem>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
+        <div>
+          <h3 className="font-semibold text-xl mt-6 mb-4">Homes</h3>
+          <Swiper
+            spaceBetween={5}
+            slidesPerView={1}
+            autoplay={{ delay: 2000 }}
+            loop
+            breakpoints={breakpoints}
+          >
+            {homes?.map((hotel) => (
+              <SwiperSlide key={hotel._id}>
+                <CardItem hotel={hotel}></CardItem>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
+      </div>
     </div>
   );
 };
