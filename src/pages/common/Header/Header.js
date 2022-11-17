@@ -11,7 +11,7 @@ const Header = () => {
           <img src={logo} className="mr-3 h-10" alt="Flowbite Logo" />
         </Navbar.Brand>
         <Navbar.Toggle />
-        <Navbar.Collapse>
+        <Navbar.Collapse className="text-center">
           <Link className="hover:text-lime-300 block my-auto" to="/">
             Host your home
           </Link>
@@ -26,7 +26,7 @@ const Header = () => {
           </Link>
           <Link className="hover:text-lime-300" to="/">
             <Button
-              className="bg-gradient-to-r from-lime-400 to-green-300"
+              className="bg-gradient-to-r from-lime-400 block mx-auto to-green-300"
               pill={true}
             >
               Sign up

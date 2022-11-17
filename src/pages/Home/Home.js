@@ -162,7 +162,7 @@ const Home = () => {
           >
             {data?.map((hotel) => (
               <SwiperSlide key={hotel._id}>
-                <CardItem hotel={hotel}></CardItem>
+                <CardItem hotel={hotel} country={true}></CardItem>
               </SwiperSlide>
             ))}
           </Swiper>

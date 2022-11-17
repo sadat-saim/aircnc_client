@@ -3,13 +3,20 @@ import { Card } from "flowbite-react";
 import { ArrowLongRightIcon } from "@heroicons/react/24/solid";
 import Star from "../Star/Star";
 
-const CardItem = ({ hotel }) => {
-  const { name, picture, price, review, details } = hotel;
+const CardItem = ({ hotel, country }) => {
+  const {
+    name,
+    picture,
+    price,
+    review,
+    details,
+    country: experienceCountry,
+  } = hotel;
 
   return (
     <Card imgSrc={picture}>
       <h5 className="text-xl font-bold tracking-tight -my-3 text-gray-900 dark:text-white">
-        {name}
+        {country ? experienceCountry : name}
       </h5>
       <p className="font-normal text-sm text-gray-700 dark:text-gray-400">
         {details.slice(0, 33)}...
