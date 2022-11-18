@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Sidebar, Button } from "flowbite-react";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
-import { useLoaderData } from "react-router-dom";
 import CardItem from "../common/Card/Card";
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, { Autoplay } from "swiper";
@@ -12,7 +11,9 @@ const Home = () => {
   const [adultCount, setAdultCount] = useState(0);
   const [childCount, setChildCount] = useState(0);
   const [homes, setHomesData] = useState(null);
-  const data = useLoaderData();
+  const [hotels, setHotelsData] = useState(null);
+  //   const data = useLoaderData();
+
   const breakpoints = {
     // when window width is >= 576px
     576: {
@@ -34,9 +35,14 @@ const Home = () => {
   };
 
   useEffect(() => {
-    fetch("homes.json")
+    fetch("http://localhost:5000/homes")
       .then((res) => res.json())
       .then((data) => setHomesData(data))
+      .catch((err) => console.error(err));
+
+    fetch("http://localhost:5000/hotels")
+      .then((res) => res.json())
+      .then((data) => setHotelsData(data))
       .catch((err) => console.error(err));
   }, []);
 
@@ -57,10 +63,10 @@ const Home = () => {
       >
         <Sidebar.Items>
           <Sidebar.ItemGroup>
-            <Sidebar.Item className=" text-xl hover:bg-transparent">
+            <Sidebar.Item className=" text-xl hover:bg-white">
               <span className="font-semibold">Where do you want to go?</span>
             </Sidebar.Item>
-            <Sidebar.Item className="hover:bg-transparent border-2 border-gray-100">
+            <Sidebar.Item className="hover:bg-white border-2 border-gray-100">
               <h3 className="font-semibold">Location</h3>
               <input
                 type="text"
@@ -69,7 +75,7 @@ const Home = () => {
                 className="w-full border-0 border-b-[1px] border-transparent outline-0 focus:ring-transparent focus:border-b-[1px] focus:border-black"
               />
             </Sidebar.Item>
-            <Sidebar.Item className="hover:bg-transparent border-2 border-gray-100">
+            <Sidebar.Item className="hover:bg-white border-2 border-gray-100">
               <div className="grid grid-cols-2">
                 <div className="border-r-2 border-gray-100">
                   <h3 className="font-semibold">Arrival</h3>
@@ -77,7 +83,7 @@ const Home = () => {
                     type="date"
                     name="arrivalDate"
                     placeholder="Add city, landmark, area"
-                    className="w-full border-0 outline-0 focus:ring-transparent "
+                    className="w-full border-0 outline-0 cursor-pointer focus:ring-transparent "
                   />
                 </div>
                 <div className="pl-4">
@@ -86,12 +92,12 @@ const Home = () => {
                     type="date"
                     name="departureDate"
                     placeholder="Add city, landmark, area"
-                    className="w-full border-0 outline-0 focus:ring-transparent "
+                    className="w-full border-0 outline-0 cursor-pointer focus:ring-transparent "
                   />
                 </div>
               </div>
             </Sidebar.Item>
-            <Sidebar.Item className="hover:bg-transparent border-2 border-gray-100">
+            <Sidebar.Item className="hover:bg-white border-2 border-gray-100">
               <div className="border-b-[1px] border-gray-300 pb-6">
                 <h3 className="font-semibold">Guests</h3>
                 <p className="font-bold mt-3">
@@ -130,7 +136,7 @@ const Home = () => {
                       -
                     </button>
                     <button className="font-bold px-3 text-xl">
-                      {adultCount}
+                      {childCount}
                     </button>
 
                     <button
@@ -160,7 +166,7 @@ const Home = () => {
             loop
             breakpoints={breakpoints}
           >
-            {data?.map((hotel) => (
+            {hotels?.map((hotel) => (
               <SwiperSlide key={hotel._id}>
                 <CardItem hotel={hotel} country={true}></CardItem>
               </SwiperSlide>

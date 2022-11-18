@@ -7,9 +7,10 @@ const Header = () => {
   return (
     <div className="border-b-[1px] border-gray-300">
       <Navbar fluid={true} className="container mx-auto" rounded={true}>
-        <Navbar.Brand href="https://flowbite.com/">
+        <Link to="/">
           <img src={logo} className="mr-3 h-10" alt="Flowbite Logo" />
-        </Navbar.Brand>
+        </Link>
+
         <Navbar.Toggle />
         <Navbar.Collapse className="text-center">
           <Link className="hover:text-lime-300 block my-auto" to="/">

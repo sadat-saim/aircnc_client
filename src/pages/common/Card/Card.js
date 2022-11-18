@@ -1,10 +1,12 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { Card } from "flowbite-react";
 import { ArrowLongRightIcon } from "@heroicons/react/24/solid";
 import Star from "../Star/Star";
 
 const CardItem = ({ hotel, country }) => {
   const {
+    _id,
     name,
     picture,
     price,
@@ -24,11 +26,13 @@ const CardItem = ({ hotel, country }) => {
       <p className="text-gray-400 text-sm -mt-3">${price} per person</p>
       <p className="flex items-center justify-between -my-3">
         <span className="flex">
-          {Array.from({ length: Math.floor(review) }).map((_, i) => (
+          {Array.from({ length: Math.floor(review) })?.map((_, i) => (
             <Star key={i}></Star>
           ))}
         </span>
-        <ArrowLongRightIcon className="h-6 w-6 text-lime-300 cursor-pointer" />
+        <Link to={country ? `/service/${_id}` : `/home/${_id}`}>
+          <ArrowLongRightIcon className="h-6 w-6 text-lime-300 cursor-pointer" />
+        </Link>
       </p>
     </Card>
   );
