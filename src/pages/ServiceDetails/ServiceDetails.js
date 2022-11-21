@@ -2,12 +2,13 @@ import { Badge, Button } from "flowbite-react";
 import React from "react";
 import { useLoaderData } from "react-router-dom";
 import Star from "../common/Star/Star";
-import { MapContainer, TileLayer, useMap, Marker, Popup } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import { PhotoProvider, PhotoView } from "react-photo-view";
 import "react-photo-view/dist/react-photo-view.css";
 import icon from "./marker-icon.png";
 import { Icon } from "leaflet";
 import useScroll from "../../utils/useScroll";
+
 const myIcon = new Icon({
   iconUrl: icon,
   iconSize: [32, 50],
@@ -36,7 +37,7 @@ const ServiceDetails = () => {
   useScroll();
 
   return (
-    <div className="container mx-auto">
+    <div className="container mx-auto px-3 md:px-0">
       <h1 className="text-3xl font-bold my-3">
         {name}-{country}
       </h1>
@@ -74,7 +75,7 @@ const ServiceDetails = () => {
       <p className="text-lg">{details}</p>
       <Button
         size="lg"
-        className="bg-gradient-to-r from-lime-400 block to-green-300 mt-4"
+        className="bg-gradient-to-r from-lime-400 block to-green-300 mt-4 px-6"
       >
         Book Now
       </Button>

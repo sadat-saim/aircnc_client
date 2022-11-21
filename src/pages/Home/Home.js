@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Sidebar, Button } from "flowbite-react";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 import CardItem from "../common/Card/Card";
@@ -6,13 +6,11 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, { Autoplay } from "swiper";
 import "swiper/css";
 import "swiper/css/autoplay";
+import { useQueries } from "@tanstack/react-query";
 
 const Home = () => {
   const [adultCount, setAdultCount] = useState(0);
   const [childCount, setChildCount] = useState(0);
-  const [homes, setHomesData] = useState(null);
-  const [hotels, setHotelsData] = useState(null);
-  //   const data = useLoaderData();
 
   const breakpoints = {
     // when window width is >= 576px
@@ -34,17 +32,28 @@ const Home = () => {
     },
   };
 
-  useEffect(() => {
-    fetch("http://localhost:5000/homes")
-      .then((res) => res.json())
-      .then((data) => setHomesData(data))
-      .catch((err) => console.error(err));
-
-    fetch("http://localhost:5000/hotels")
-      .then((res) => res.json())
-      .then((data) => setHotelsData(data))
-      .catch((err) => console.error(err));
-  }, []);
+  const [hotels, homes] = useQueries({
+    queries: [
+      {
+        queryKey: ["hotels", 1],
+        queryFn: async () => {
+          const res = await fetch("http://localhost:5000/hotels");
+          const data = await res.json();
+          return data;
+        },
+        staleTime: Infinity,
+      },
+      {
+        queryKey: ["homes", 2],
+        queryFn: async () => {
+          const res = await fetch("http://localhost:5000/homes");
+          const data = await res.json();
+          return data;
+        },
+        staleTime: Infinity,
+      },
+    ],
+  });
 
   SwiperCore.use([Autoplay]);
 
@@ -166,7 +175,7 @@ const Home = () => {
             loop
             breakpoints={breakpoints}
           >
-            {hotels?.map((hotel) => (
+            {hotels?.data?.map((hotel) => (
               <SwiperSlide key={hotel._id}>
                 <CardItem hotel={hotel} country={true}></CardItem>
               </SwiperSlide>
@@ -182,7 +191,7 @@ const Home = () => {
             loop
             breakpoints={breakpoints}
           >
-            {homes?.map((hotel) => (
+            {homes?.data?.map((hotel) => (
               <SwiperSlide key={hotel._id}>
                 <CardItem hotel={hotel}></CardItem>
               </SwiperSlide>
